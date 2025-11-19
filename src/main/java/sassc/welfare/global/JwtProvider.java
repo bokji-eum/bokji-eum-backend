@@ -16,12 +16,12 @@ public class JwtProvider {
     @Value("${jwt.secret}") private String secret;
     @Value("${jwt.exp-minutes:60}") private long expMinutes;
 
-    public String generateToken(Long userId, String email) {
+    public String generateToken(Long userId, String username) {
         Date now = new Date();
         Date exp = new Date(now.getTime() + expMinutes * 60_000);
         return Jwts.builder()
                 .setSubject(String.valueOf(userId))
-                .claim("email", email)
+                .claim("username", username)
                 .setIssuedAt(now)
                 .setExpiration(exp)
                 .signWith(Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8)), SignatureAlgorithm.HS256)

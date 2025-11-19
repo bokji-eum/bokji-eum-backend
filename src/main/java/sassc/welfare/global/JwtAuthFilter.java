@@ -1,5 +1,7 @@
 package sassc.welfare.global;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -30,12 +32,12 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         if (auth != null && auth.startsWith("Bearer ")) {
             String token = auth.substring(7);
             try {
-                var jws = jwtProvider.parse(token);
+                Jws<Claims> jws = jwtProvider.parse(token);
                 Long userId = Long.valueOf(jws.getBody().getSubject());
                 userRepo.findById(userId).ifPresent(u -> {
                     UsernamePasswordAuthenticationToken authentication =
                             new UsernamePasswordAuthenticationToken(
-                                    new UserPrincipal(u.getId(), u.getEmail(), u.getName()),
+                                    new UserPrincipal(u.getId(), u.getUsername(), u.getName()),
                                     null,
                                     List.of(new SimpleGrantedAuthority("ROLE_USER")));
                     authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
