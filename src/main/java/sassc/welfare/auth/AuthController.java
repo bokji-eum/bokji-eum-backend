@@ -1,7 +1,10 @@
 package sassc.welfare.auth;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import sassc.welfare.global.UserPrincipal;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -19,4 +22,12 @@ public class AuthController {
     public AuthResponse login(@RequestBody LoginRequest req) {
         return authService.login(req);
     }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> me(@AuthenticationPrincipal UserPrincipal principal) {
+        UserResponse me = authService.getMe(principal);
+        return ResponseEntity.ok(me);
+    }
+
+
 }

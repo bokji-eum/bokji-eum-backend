@@ -21,7 +21,7 @@ public class User {
     private Long id;
 
     @Column(nullable = false, unique = true, length = 255)
-    private String email;
+    private String username;
 
     @Column(nullable = false, length = 255)
     private String passwordHash;

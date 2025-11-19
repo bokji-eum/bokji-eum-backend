@@ -1,3 +1,3 @@
 package sassc.welfare.auth;
 
-public record SignUpRequest(String email, String password, String name) {}
+public record SignUpRequest(String username, String password, String name) {}
